@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+# Copyright 2020 Oliver Smith
+# SPDX-License-Identifier: GPL-3.0-or-later
+supervisor=supervise-daemon
+
+name="tinydm"
+description="tinydm"
+
+# FIXME: get UID from config file and translate it to username,
+# let postmarketos-base provide that config file
+command="/usr/bin/autologin user tinydm-run-session"
+
+depend() {
+        provide display-manager
+        need localmount dbus elogind
+}
