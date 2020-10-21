@@ -12,11 +12,6 @@ parse_xdg_desktop() {
 	grep "^$2=" "$1" | cut -d "=" -f 2-
 }
 
-root_is_encrypted() {
-	# FIXME: make this more generic
-	mount | grep -q '^/dev/mapper/root on / '
-}
-
 # $1: Exec line from .desktop file
 run_session_wayland() {
 	export XDG_SESSION_TYPE=wayland
@@ -39,14 +34,6 @@ run_session() {
 
 	resolved="$(realpath "$target")"
 	cmd="$(parse_xdg_desktop "$resolved" "Exec")"
-	arg_locked="$(parse_xdg_desktop "$resolved" "X-LockedArg")"
-	arg_unlocked="$(parse_xdg_desktop "$resolved" "X-UnlockedArg")"
-
-	if root_is_encrypted; then
-		[ -n "$arg_unlocked" ] && cmd="$cmd $arg_unlocked"
-	else
-		[ -n "$arg_locked" ] && cmd="$cmd $arg_locked"
-	fi
 
 	echo "--- tinydm ---"
 	echo "Date:    $(date)"
