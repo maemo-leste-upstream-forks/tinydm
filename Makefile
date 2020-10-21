@@ -15,4 +15,6 @@ install:
 	if [ "$(OPENRC)" = "1" ]; then \
 		install -Dm755 tinydm.initd \
 			"$(DESTDIR)/etc/init.d/tinydm"; \
+		install -Dm644 tinydm.confd \
+			"$(DESTDIR)/etc/conf.d/tinydm"; \
 	fi
