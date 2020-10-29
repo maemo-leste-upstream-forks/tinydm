@@ -15,12 +15,14 @@ parse_xdg_desktop() {
 # $1: Exec line from .desktop file
 run_session_wayland() {
 	export XDG_SESSION_TYPE=wayland
+	# shellcheck disable=SC2086
 	exec $1
 }
 
 # $1: Exec line from .desktop file
 run_session_x() {
 	export XDG_SESSION_TYPE=X11
+	# shellcheck disable=SC2086
 	exec startx $1
 }
 
