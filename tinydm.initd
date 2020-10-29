@@ -6,11 +6,23 @@ supervisor=supervise-daemon
 name="tinydm"
 description="tinydm"
 
-# FIXME: get UID from config file and translate it to username,
-# let postmarketos-base provide that config file
-command="/usr/bin/autologin user tinydm-run-session"
+command="/usr/bin/autologin"
+command_args="tinydm-run-session"
 
 depend() {
         provide display-manager
         need localmount dbus elogind
+}
+
+start_pre() {
+        # default to 1000 if none set in config
+        [ -z "$AUTOLOGIN_UID" ] && AUTOLOGIN_UID=1000
+
+        user=$(getent passwd ${AUTOLOGIN_UID} | cut -d: -f1)
+        if [ -z "$user" ]; then
+                eerror "ERROR: unable to find user with uid $AUTOLOGIN_UID"
+                return 1
+        fi
+
+        command_args="$user $command_args"
 }
