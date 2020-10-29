@@ -1,24 +1,37 @@
 #!/bin/sh
 # Copyright 2020 Oliver Smith
+# Copyright 2020 Clayton Craft
 # SPDX-License-Identifier: GPL-3.0-or-later
-
-# TODO:
-# - complain if file exists and points to valid session
-# - different error if session-file from arg does not exist
-# - support -f
-
 exit_usage() {
-	echo "usage: tinydm-set-default session-file"
+	echo "usage: $0 [-f] -s session-file"
 	exit 1
 }
+force=false
+while getopts fs:h opt; do
+        case "$opt" in
+                f) force=true ;;
+                s) session=$OPTARG ;;
+                h|?) exit_usage ;;
+        esac
+done
 
-if ! [ -e "$1" ]; then
-	exit_usage
+[ -z "$session" ] && exit_usage
+
+if ! [ -e "$session" ]; then
+	echo "tinydm: Session file does not exist: $session"
+        exit 1
 fi
 
 mkdir -p /var/lib/tinydm
 
 target="/var/lib/tinydm/default-session.desktop"
-ln -sf "$1" "$target"
+session_old=$(readlink -f $target)
+if [ -e "$session_old" ] && ! $force; then
+	echo "tinydm: Session already set to: $session_old"
+        echo "tinydm: To change it, run: 'tinydm-set-session -f -s $session'"
+        exit 0
+fi
 
-echo "tinydm: session set: $1"
+ln -sf "$session" "$target"
+
+echo "tinydm: session set: $session"
