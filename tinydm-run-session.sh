@@ -3,7 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 setup_log() {
-	exec >~/.tinydm.log 2>&1
+	logfile=${XDG_CACHE_DIR:-~/.cache}/tinydm.log
+	mkdir -p "$(dirname "$logfile")"
+	exec >"$logfile" 2>&1
 }
 
 # $1: file
