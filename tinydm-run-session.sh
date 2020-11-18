@@ -49,7 +49,7 @@ run_session() {
 		/usr/share/wayland-sessions*)
 			run_session_wayland "$cmd"
 			;;
-		/usr/share/x-sessions*)
+		/usr/share/xsessions*)
 			run_session_x "$cmd"
 			;;
 		*)
