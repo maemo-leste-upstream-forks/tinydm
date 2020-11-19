@@ -17,15 +17,13 @@ parse_xdg_desktop() {
 # $1: Exec line from .desktop file
 run_session_wayland() {
 	export XDG_SESSION_TYPE=wayland
-	# shellcheck disable=SC2086
-	exec $1
+	exec "$@"
 }
 
 # $1: Exec line from .desktop file
 run_session_x() {
 	export XDG_SESSION_TYPE=X11
-	# shellcheck disable=SC2086
-	exec startx $1
+	exec "$@"
 }
 
 run_session() {
@@ -47,10 +45,12 @@ run_session() {
 
 	case "$resolved" in
 		/usr/share/wayland-sessions*)
-			run_session_wayland "$cmd"
+			# shellcheck disable=SC2086
+			run_session_wayland $cmd
 			;;
 		/usr/share/xsessions*)
-			run_session_x "$cmd"
+			# shellcheck disable=SC2086
+			run_session_x $cmd
 			;;
 		*)
 			echo "ERROR: could not detect session type!"
