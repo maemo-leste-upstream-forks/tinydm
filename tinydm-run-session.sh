@@ -23,7 +23,20 @@ run_session_wayland() {
 # $1: Exec line from .desktop file
 run_session_x() {
 	export XDG_SESSION_TYPE=X11
-	exec "$@"
+
+	# startx needs the absolute executable path, otherwise it will not
+	# recognize the executable as command to be executed
+	cmd_startx="startx $(command -v "$1")"
+
+	# 'Exec' in desktop entries may contain arguments for the executable:
+	# https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
+	shift
+	for arg in "$@"; do
+		cmd_startx="$cmd_startx $arg"
+	done
+
+	# shellcheck disable=SC2086
+	exec $cmd_startx
 }
 
 run_session() {
