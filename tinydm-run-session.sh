@@ -8,6 +8,15 @@ setup_log() {
 	exec >"$logfile" 2>&1
 }
 
+source_profile() {
+	for profile in /etc/profile "$HOME"/.profile; do
+		if [ -f "$profile" ]; then
+			# shellcheck disable=SC1090
+			. "$profile"
+		fi
+	done
+}
+
 # $1: file
 # $2: key
 parse_xdg_desktop() {
@@ -73,4 +82,5 @@ run_session() {
 }
 
 setup_log
+source_profile
 run_session
