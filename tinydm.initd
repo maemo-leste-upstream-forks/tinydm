@@ -11,7 +11,8 @@ command_args="tinydm-run-session"
 
 depend() {
         provide display-manager
-        need localmount dbus elogind
+        need localmount
+        want dbus elogind
 }
 
 start_pre() {
