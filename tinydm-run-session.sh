@@ -5,6 +5,11 @@
 setup_log() {
 	logfile=${XDG_CACHE_DIR:-~/.cache}/tinydm.log
 	mkdir -p "$(dirname "$logfile")"
+        if [ -f "$logfile" ]; then
+		# keep previous log file around
+		mv "$logfile" "$logfile".old
+        fi
+
 	exec >"$logfile" 2>&1
 }
 
