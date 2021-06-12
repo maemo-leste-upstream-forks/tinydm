@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 setup_log() {
-	logfile=${XDG_CACHE_DIR:-~/.cache}/tinydm.log
+	logfile=${XDG_STATE_HOME:-~/.local/state}/tinydm.log
 	mkdir -p "$(dirname "$logfile")"
         if [ -f "$logfile" ]; then
 		# keep previous log file around
