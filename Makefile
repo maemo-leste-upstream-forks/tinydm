@@ -18,3 +18,6 @@ install:
 		install -Dm644 tinydm.confd \
 			"$(DESTDIR)/etc/conf.d/tinydm"; \
 	fi
+
+	mkdir -p $(DESTDIR)/etc/tinydm.d/env-wayland.d
+	mkdir -p $(DESTDIR)/etc/tinydm.d/env-x11.d

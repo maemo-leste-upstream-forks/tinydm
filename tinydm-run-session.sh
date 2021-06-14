@@ -22,6 +22,24 @@ source_profile() {
 	done
 }
 
+# $1: session type (i.e. 'wayland', or 'x11')
+source_session_profiles() {
+	session_type="$1"
+	if [ "$session_type" != "wayland" ] && [ "$session_type" != "x11" ]; then
+		echo "Unknown session type: $session_type"
+		exit 1
+	fi
+
+	[ ! -d "/etc/tinydm.d/env-${session_type}.d" ] && return
+
+	for file in "/etc/tinydm.d/env-${session_type}.d/"*; do
+		echo "tinydm: sourcing file: $file"
+		# shellcheck disable=SC1090
+		. "$file"
+	done
+}
+
+
 # $1: file
 # $2: key
 parse_xdg_desktop() {
@@ -72,10 +90,12 @@ run_session() {
 
 	case "$resolved" in
 		/usr/share/wayland-sessions*)
+			source_session_profiles wayland
 			# shellcheck disable=SC2086
 			run_session_wayland $cmd
 			;;
 		/usr/share/xsessions*)
+			source_session_profiles x11
 			# shellcheck disable=SC2086
 			run_session_x $cmd
 			;;
