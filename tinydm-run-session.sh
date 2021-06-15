@@ -30,9 +30,11 @@ source_session_profiles() {
 		exit 1
 	fi
 
-	[ ! -d "/etc/tinydm.d/env-${session_type}.d" ] && return
-
 	for file in "/etc/tinydm.d/env-${session_type}.d/"*; do
+		if ! [ -e "$file" ]; then
+			continue
+		fi
+
 		echo "tinydm: sourcing file: $file"
 		# shellcheck disable=SC1090
 		. "$file"
