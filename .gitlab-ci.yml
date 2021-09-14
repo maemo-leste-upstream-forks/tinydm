@@ -27,4 +27,4 @@ shellcheck:
   before_script:
     - apk -q add shellcheck git
   script:
-    - .gitlab-ci/shellcheck.sh
+    - .ci/shellcheck.sh
