@@ -86,6 +86,11 @@ run_session() {
 	export XDG_SESSION_DESKTOP="$desktop"
 	cmd="$(parse_xdg_desktop "$resolved" "Exec")"
 
+	desktop_names="$(parse_xdg_desktop "$resolved" "DesktopNames")"
+	if [ -n "$desktop_names" ]; then
+		export XDG_CURRENT_DESKTOP="$desktop_names"
+	fi
+
 	echo "--- tinydm ---"
 	echo "Date:    $(date)"
 	echo "Session: $resolved"
