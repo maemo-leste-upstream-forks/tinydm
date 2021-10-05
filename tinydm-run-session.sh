@@ -82,11 +82,14 @@ run_session() {
 	fi
 
 	resolved="$(realpath "$target")"
+	desktop="$(basename "$resolved" | sed 's/\.desktop$//')"
+	export XDG_SESSION_DESKTOP="$desktop"
 	cmd="$(parse_xdg_desktop "$resolved" "Exec")"
 
 	echo "--- tinydm ---"
 	echo "Date:    $(date)"
 	echo "Session: $resolved"
+	echo "Desktop: $desktop"
 	echo "Exec:    $cmd"
 	echo "---"
 
