@@ -1,0 +1,12 @@
+Source: tinydm
+Section: misc
+Priority: optional
+Maintainer: Carl Philipp Klemm <carl@uvos.xyz>
+Build-Depends: debhelper (>= 10),
+Standards-Version: 3.7.3
+
+Package: tinydm
+Architecture: all
+Depends: openrc
+Recommends:
+Description: Tiny Display Manager
